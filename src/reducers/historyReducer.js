@@ -15,7 +15,6 @@ export function historyReducer(state = historyState, action) {
     case Actions.FETCH_DATA_FAIL:
       return {
         ...state,
-        historyItems: action.payload,
         loading: false,
         error: action.payload,
       };

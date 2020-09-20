@@ -12,7 +12,7 @@ export default function App() {
       <GlobalStyle />
       <Router>
         <Header />
-        <Route path="/" component={History} />
+        <Route exact path="/" component={History} />
       </Router>
     </Provider>
   );

@@ -1,6 +1,11 @@
-import React from 'react'
-import SpaceXLogo from '../../assets/spacex-logo.svg'
+import React from "react";
+import SpaceXLogo from "../../assets/spacex-logo.svg";
+import { Link } from "react-router-dom";
 
-export default function Logo(){
-    return <img width={360} src={SpaceXLogo} />
+export default function Logo() {
+  return (
+    <Link to="/">
+      <img width={360} src={SpaceXLogo} />
+    </Link>
+  );
 }

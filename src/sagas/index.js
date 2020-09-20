@@ -13,7 +13,6 @@ function* fetchHistory() {
   } catch (error) {
     yield put({
       type: Actions.FETCH_DATA_FAIL,
-      payload: [],
       loading: false,
       error,
     });
