@@ -1,11 +1,13 @@
 import React from 'react'
-import styled from 'styled-components'
-import {Link} from 'react-router-dom'
+import styled, {css} from 'styled-components'
+import {Link, useLocation} from 'react-router-dom'
+
 
 export default function Nav(){
+    const location = useLocation()
     return <Wrapper>
-        <NavItem to="/">HISTORY</NavItem>
-        <NavItem to="/launches">LAUNCHES</NavItem>
+        <NavItem selected={location.pathname==='/'} to="/">HISTORY</NavItem>
+        <NavItem selected={location.pathname==='/launches'} to="/launches">LAUNCHES</NavItem>
     </Wrapper>
 }
 
@@ -15,10 +17,16 @@ const Wrapper = styled.div`
 `
 
 const NavItem = styled(Link)`
-  font-size: 1.15rem;
   margin-left: 32px;
   cursor: pointer;
   user-select: none;
   text-decoration: none;
   color: #000;
+  
+  &:hover{
+    color: #005288;
+  }
+  ${props=>props.selected && css`
+    color: #005288;
+`}
 `

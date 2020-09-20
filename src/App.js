@@ -1,17 +1,20 @@
 import React from 'react'
-import styled, {createGlobalStyle} from 'styled-components'
-import Logo from "./components/elements/Logo";
-import Nav from "./components/elements/Nav";
+import {Provider} from "react-redux";
+import {createGlobalStyle} from 'styled-components'
 import {HashRouter as Router} from 'react-router-dom';
+import Header from "./components/containers/Header";
+import store from "./store";
 
 export default function App() {
-    return <Router>
-        <GlobalStyle/>
-        <LogoNavWrapper>
-            <Logo/>
-            <Nav/>
-        </LogoNavWrapper>
-    </Router>
+    return(
+        <Provider store={store}>
+            <Router>
+                <GlobalStyle/>
+                <Header/>
+            </Router>
+        </Provider>
+
+        )
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -22,9 +25,4 @@ const GlobalStyle = createGlobalStyle`
 
 `
 
-const LogoNavWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-`
+
