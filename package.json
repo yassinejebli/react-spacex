@@ -13,11 +13,9 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css}": [
-      "prettier --write",
-      "eslint --fix src/",
-      "tslint --fix --project .",
-      "git add"
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
     ]
   },
   "keywords": [],
@@ -37,10 +35,22 @@
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-config-standard-react": "^9.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "eslint-plugin-standard": "^4.0.1",
     "html-webpack-plugin": "^4.4.1",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
