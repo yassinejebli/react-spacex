@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { loadHistory } from "../../actions/historyActions";
 import Loader from "../elements/Loader";
+import HistoryItem from "../elements/HistoryItem";
 
 export default function History() {
   const dispatch = useDispatch();
@@ -15,9 +16,22 @@ export default function History() {
   return (
     <>
       <Loader loading={loading} />
-      <Wrapper>{JSON.stringify(historyItems)}</Wrapper>
+      <Wrapper>
+        {historyItems.map((event) => (
+          <HistoryItem
+            key={event.id}
+            title={event.title}
+            date={new Date(event.event_date_utc).toLocaleString("de")}
+            description={event.details}
+            link={event.links.article}
+          />
+        ))}
+      </Wrapper>
     </>
   );
 }
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  flex-flow: wrap;
+`;
