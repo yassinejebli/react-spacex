@@ -11,7 +11,12 @@ function* fetchHistory() {
       throw response;
     }
   } catch (error) {
-    yield put({ type: Actions.FETCH_DATA_FAIL, payload: [], loading: false });
+    yield put({
+      type: Actions.FETCH_DATA_FAIL,
+      payload: [],
+      loading: false,
+      error,
+    });
   }
 }
 

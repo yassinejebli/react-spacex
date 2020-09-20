@@ -3,6 +3,7 @@ import * as Actions from "../actions/historyActions";
 export const historyState = {
   historyItems: [],
   loading: false,
+  error: null,
 };
 
 export function historyReducer(state = historyState, action) {
@@ -12,7 +13,12 @@ export function historyReducer(state = historyState, action) {
     case Actions.FETCH_DATA_SUCCESS:
       return { ...state, historyItems: action.payload, loading: false };
     case Actions.FETCH_DATA_FAIL:
-      return { ...state, historyItems: action.payload, loading: false };
+      return {
+        ...state,
+        historyItems: action.payload,
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

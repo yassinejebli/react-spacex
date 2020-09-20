@@ -1,20 +1,21 @@
-import React from 'react'
-import {Provider} from "react-redux";
-import {createGlobalStyle} from 'styled-components'
-import {HashRouter as Router} from 'react-router-dom';
+import React from "react";
+import { Provider } from "react-redux";
+import { createGlobalStyle } from "styled-components";
+import { HashRouter as Router, Route } from "react-router-dom";
 import Header from "./components/containers/Header";
 import store from "./store";
+import History from "./components/containers/History";
 
 export default function App() {
-    return(
-        <Provider store={store}>
-            <Router>
-                <GlobalStyle/>
-                <Header/>
-            </Router>
-        </Provider>
-
-        )
+  return (
+    <Provider store={store}>
+      <GlobalStyle />
+      <Router>
+        <Header />
+        <Route path="/" component={History} />
+      </Router>
+    </Provider>
+  );
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -23,6 +24,4 @@ const GlobalStyle = createGlobalStyle`
             font-family: 'Rubik', sans-serif;
         }
 
-`
-
-
+`;
