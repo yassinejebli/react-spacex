@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { loadHistory } from "../../actions/historyActions";
+import Loader from "../elements/Loader";
 
 export default function History() {
   const dispatch = useDispatch();
@@ -11,7 +12,12 @@ export default function History() {
   React.useEffect(() => {
     dispatch(loadHistory());
   }, []);
-  return <Wrapper>{JSON.stringify(historyItems)}</Wrapper>;
+  return (
+    <>
+      <Loader loading={loading} />
+      <Wrapper>{JSON.stringify(historyItems)}</Wrapper>
+    </>
+  );
 }
 
 const Wrapper = styled.div``;
