@@ -42,6 +42,11 @@ const Wrapper = styled.div`
   &:hover > ${Title} {
     color: #005288;
   }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    margin: 0;
+  }
 `;
 
 const Label = styled.label`

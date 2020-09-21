@@ -5,6 +5,7 @@ import { HashRouter as Router, Route } from "react-router-dom";
 import Header from "./components/containers/Header";
 import store from "./store";
 import History from "./components/containers/History";
+import Launches from "./components/containers/Launches";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Router>
         <Header />
         <Route exact path="/" component={History} />
+        <Route exact path="/launches" component={Launches} />
       </Router>
     </Provider>
   );

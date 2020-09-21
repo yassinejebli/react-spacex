@@ -18,4 +18,8 @@ const LogoNavWrapper = styled.div`
   align-items: center;
   padding: 16px;
   margin-bottom: 60px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
