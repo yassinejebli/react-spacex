@@ -18,11 +18,11 @@ export default function Pagination() {
   };
 
   const firstPage = () => {
-    dispatch(loadLaunches(1));
+    if (meta.currentPage !== 1) dispatch(loadLaunches(1));
   };
 
   const lastPage = () => {
-    dispatch(loadLaunches(totalPages));
+    if (meta.currentPage !== totalPages) dispatch(loadLaunches(totalPages));
   };
 
   return (

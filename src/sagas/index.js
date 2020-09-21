@@ -7,9 +7,9 @@ import * as LaunchesActions from "../actions/launchesActions";
 function* fetchHistory() {
   try {
     // Fetch only the needed fields
-    const filters = "id,title,event_date_utc,details,links";
+    const fieldsToFetch = "id,title,event_date_utc,details,links";
     const response = yield fetch(
-      `https://api.spacexdata.com/v3/history?filter=${filters}`
+      `https://api.spacexdata.com/v3/history?filter=${fieldsToFetch}`
     );
     if (response.status >= 200 && response.status < 300) {
       const data = yield response.json();
@@ -32,15 +32,18 @@ function* loadHistory() {
 
 // ---------------------------------------Launches
 
-function* fetchLaunches({ payload: { currentPage, missionName } }) {
+function* fetchLaunches({ payload: { currentPage, filters } }) {
   const { meta } = yield select((state) => state.launches);
   const limit = meta.perPage;
   const offset = (currentPage - 1) * limit;
   // Fetch only the needed fields
-  const filters = "mission_name,flight_number,rocket/second_stage/payloads";
+  const fieldsToFetch =
+    "mission_name,flight_number,rocket/second_stage/payloads";
   try {
     const response = yield fetch(
-      `https://api.spacexdata.com/v3/launches?mission_name=${missionName}&offset=${offset}&limit=${limit}&filter=${filters}`
+      `https://api.spacexdata.com/v3/launches?${new URLSearchParams(
+        filters
+      ).toString()}&offset=${offset}&limit=${limit}&filter=${fieldsToFetch}`
     );
     const totalItems = response.headers.get("spacex-api-count");
     if (response.status >= 200 && response.status < 300) {

@@ -5,6 +5,7 @@ import Loader from "../elements/Loader";
 import { loadLaunches } from "../../actions/launchesActions";
 import LaunchItem from "../elements/LaunchItem";
 import Pagination from "./Pagination";
+import Filters from "./Filters";
 
 export default function Launches() {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function Launches() {
   return (
     <>
       <Loader loading={loading} />
+      <Filters />
       <Wrapper>
         {launchesItems.map((launch) => {
           const payload = launch.rocket?.second_stage?.payloads[0];
