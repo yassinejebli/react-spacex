@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { loadLaunches } from "../../actions/launchesActions";
 import useDebounce from "../../hooks/useDebounce";
 import { formatDate } from "../../utils/dateUtils";
+import OrbitDropdownList from "./OrbitDropdownList";
 
 export default function LaunchFilters() {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ export default function LaunchFilters() {
   const debouncedFilter = useDebounce(filter);
 
   React.useEffect(() => {
-    // to filter by launch_date_utc we have to set time it's painful for the user as he mostly doesn't know what time the mission was launched
+    // to filter by launch_date_utc we have to set time it's painful for the user as he mostly doesn't know what the exact time a mission was launched
     // I think it's better to filter by "start" and "end" fields
     let filterParam = {};
     if (debouncedFilter.launch_date) {
@@ -55,6 +56,7 @@ export default function LaunchFilters() {
         name="launch_date"
         onChange={onFieldChange}
       />
+      <OrbitDropdownList />
     </Wrapper>
   );
 }
@@ -65,14 +67,15 @@ const Wrapper = styled.div`
   @media (max-width: 600px) {
     flex-direction: column;
   }
+  @media (max-width: 600px) {
+    & > * {
+      margin-top: 8px;
+    }
+  }
 `;
 
 const Input = styled.input`
   padding: 5px;
   width: 230px;
   margin-right: 8px;
-
-  @media (max-width: 600px) {
-    margin-top: 8px;
-  }
 `;

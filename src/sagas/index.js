@@ -1,6 +1,7 @@
 import { put, takeLatest, all, select } from "redux-saga/effects";
 import * as HistoryActions from "../actions/historyActions";
 import * as LaunchesActions from "../actions/launchesActions";
+import * as OrbitActions from "../actions/orbitActions";
 
 // ---------------------------------------History
 
@@ -72,6 +73,52 @@ function* loadLaunches() {
   yield takeLatest(LaunchesActions.FETCH_DATA_BEGIN, fetchLaunches);
 }
 
+// ---------------------------------------Orbits
+
+function* fetchAndReshapeOrbitsData() {
+  try {
+    // Fetch only the needed fields
+    const fieldsToFetch = "rocket_id,payload_weights";
+    const response = yield fetch(
+      `https://api.spacexdata.com/v3/rockets?filter=${fieldsToFetch}`
+    );
+    if (response.status >= 200 && response.status < 300) {
+      const data = yield response.json();
+
+      // Reshape data, maybe I have to create a new action for reshaping orbit data :/
+      const orbits = data.reduce((acc, curr) => {
+        curr.payload_weights.forEach((orb) => {
+          console.log({ orb, curr, acc });
+          // Add orbit only if it doesn't exist in the accumulator
+          const tmp = acc.find((_orb) => _orb.id === orb.id);
+          if (!tmp)
+            acc.push({
+              id: orb.id,
+              name: orb.name,
+              rocketsId: [curr.rocket_id],
+            });
+          // if orbit already added in acc, add rocket id in rocketsId array
+          else tmp.rocketsId = [...tmp.rocketsId, curr.rocket_id];
+        });
+        return acc;
+      }, []);
+      yield put({ type: OrbitActions.FETCH_DATA_SUCCESS, payload: orbits });
+    } else {
+      throw response;
+    }
+  } catch (error) {
+    yield put({
+      type: OrbitActions.FETCH_DATA_FAIL,
+      loading: false,
+      error,
+    });
+  }
+}
+
+function* loadOrbits() {
+  yield takeLatest(OrbitActions.FETCH_DATA_BEGIN, fetchAndReshapeOrbitsData);
+}
+
 export default function* rootSaga() {
-  yield all([loadHistory(), loadLaunches()]);
+  yield all([loadHistory(), loadLaunches(), loadOrbits()]);
 }
