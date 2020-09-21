@@ -61,10 +61,18 @@ export default function LaunchFilters() {
 
 const Wrapper = styled.div`
   display: flex;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 const Input = styled.input`
   padding: 5px;
   width: 230px;
   margin-right: 8px;
+
+  @media (max-width: 600px) {
+    margin-top: 8px;
+  }
 `;

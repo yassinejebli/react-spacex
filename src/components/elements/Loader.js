@@ -33,7 +33,7 @@ const Overlay = styled.div`
 `;
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   margin: -100px;
@@ -44,7 +44,7 @@ const Wrapper = styled.div`
   box-shadow: inset -25px 0px 0 0px #9098a1;
   transition: transform 0.2s ease-in-out;
   & > img {
-    position: absolute;
+    position: fixed;
     width: 50px;
     height: 30px;
     animation: infinite-spinning 4s infinite;

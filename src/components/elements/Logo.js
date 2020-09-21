@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function Logo() {
   return (
     <Link to="/">
-      <img width={360} src={SpaceXLogo} />
+      <img width={280} src={SpaceXLogo} />
     </Link>
   );
 }
