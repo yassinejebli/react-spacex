@@ -5,7 +5,7 @@ import { loadLaunches } from "../../actions/launchesActions";
 import useDebounce from "../../hooks/useDebounce";
 import { formatDate } from "../../utils/dateUtils";
 
-export default function Filters() {
+export default function LaunchFilters() {
   const dispatch = useDispatch();
   const [filter, setFilter] = React.useState({
     mission_name: "",
