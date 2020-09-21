@@ -28,22 +28,23 @@ function* loadHistory() {
 
 // ---------------------------------------Launches
 
-function* fetchLaunches() {
+function* fetchLaunches({ payload: { currentPage } }) {
   const { meta } = yield select((state) => state.launches);
   const limit = meta.perPage;
-  const offset = (meta.currentPage - 1) * limit;
+  const offset = (currentPage - 1) * limit;
   try {
     const response = yield fetch(
       `https://api.spacexdata.com/v3/launches?offset=${offset}&limit=${limit}`
     );
+    const totalItems = response.headers.get("spacex-api-count");
     if (response.status >= 200 && response.status < 300) {
       const data = yield response.json();
       yield put({
         type: LaunchesActions.FETCH_DATA_SUCCESS,
         payload: {
           data,
-          totalItems: 100, // TODO: total items needed
-          currentPage: meta.currentPage + 1,
+          totalItems,
+          currentPage,
         },
       });
     } else {

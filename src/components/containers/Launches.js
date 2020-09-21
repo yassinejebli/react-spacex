@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Loader from "../elements/Loader";
 import { loadLaunches } from "../../actions/launchesActions";
+import LaunchItem from "../elements/LaunchItem";
+import Pagination from "./Pagination";
 
 export default function Launches() {
   const dispatch = useDispatch();
@@ -11,12 +13,27 @@ export default function Launches() {
   );
 
   React.useEffect(() => {
-    dispatch(loadLaunches(2));
+    // load 1st page
+    dispatch(loadLaunches(1));
   }, []);
   return (
     <>
       <Loader loading={loading} />
-      <Wrapper>{JSON.stringify(launchesItems)}</Wrapper>
+      <Wrapper>
+        {launchesItems.map((launch) => {
+          const payload = launch.rocket?.second_stage?.payloads[0];
+          return (
+            <LaunchItem
+              key={launch.flight_number}
+              missionName={launch.mission_name}
+              nationality={payload?.nationality}
+              manufacturer={payload?.manufacturer}
+              type={payload?.payload_type}
+            />
+          );
+        })}
+      </Wrapper>
+      <Pagination />
     </>
   );
 }

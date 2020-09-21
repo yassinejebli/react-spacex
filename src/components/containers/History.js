@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { loadHistory } from "../../actions/historyActions";
 import Loader from "../elements/Loader";
-import HistoryItem from "./HistoryItem";
+import HistoryItem from "../elements/HistoryItem";
 
 export default function History() {
   const dispatch = useDispatch();

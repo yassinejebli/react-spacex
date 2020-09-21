@@ -6,7 +6,7 @@ export const launchesState = {
   error: null,
   meta: {
     currentPage: 1,
-    perPage: 5,
+    perPage: 6,
     totalItems: null,
   },
 };
@@ -21,8 +21,8 @@ export function launchesReducer(state = launchesState, action) {
         launchesItems: action.payload.data,
         meta: {
           currentPage: action.payload.currentPage,
-          perPage: 5, // Always 5 items per page for now, I can parameterize it if that's needed
-          totalItems: action.payload.currentPage,
+          perPage: 6, // Always 5 items per page for now, I can parameterize it if that's needed
+          totalItems: action.payload.totalItems,
         },
         loading: false,
       };
