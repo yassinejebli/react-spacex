@@ -64,7 +64,7 @@ const Wrapper = styled.div`
   right: 0;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-
+  overflow-y: auto;
   & div,
   h1,
   span {
@@ -75,6 +75,7 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   margin: 0 auto;
+  padding: 0 8px;
 `;
 
 const Button = styled.button`
@@ -106,4 +107,7 @@ const Video = styled.iframe.attrs({
   width: 400px;
   height: 200px;
   margin-top: 8px;
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;

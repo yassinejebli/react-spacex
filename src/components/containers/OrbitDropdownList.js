@@ -15,7 +15,7 @@ export default function OrbitDropdownList(props) {
   return (
     <Select {...props}>
       {loading && <option>Loading...</option>}
-      <option value="">Filter by orbit</option>
+      <option value="">All</option>
       {orbits.map((o) => (
         <option key={o.id} value={o.id}>
           {o.name}

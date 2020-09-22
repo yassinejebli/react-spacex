@@ -50,31 +50,40 @@ export default function LaunchFilters() {
 
   return (
     <Wrapper>
-      <Input
-        type="text"
-        placeholder="Filter by mission name..."
-        value={filter.mission_name}
-        name="mission_name"
-        onChange={onFieldChange}
-      />
-      <Input
-        type="date"
-        value={filter.launch_date}
-        name="launch_date"
-        onChange={onFieldChange}
-      />
-      <OrbitDropdownList
-        name="orbit"
-        onChange={onFieldChange}
-        value={filter.orbit}
-      />
+      <div>
+        <div>Filter by mission name</div>
+        <Input
+          type="text"
+          placeholder="FalconSat..."
+          value={filter.mission_name}
+          name="mission_name"
+          onChange={onFieldChange}
+        />
+      </div>
+      <div>
+        <div>Filter by launch date</div>
+        <Input
+          type="date"
+          value={filter.launch_date}
+          name="launch_date"
+          onChange={onFieldChange}
+        />
+      </div>
+      <div>
+        <div>Filter by orbit</div>
+        <OrbitDropdownList
+          name="orbit"
+          onChange={onFieldChange}
+          value={filter.orbit}
+        />
+      </div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   display: flex;
-
+  margin-bottom: 16px;
   @media (max-width: 600px) {
     flex-direction: column;
   }
@@ -86,7 +95,7 @@ const Wrapper = styled.div`
 `;
 
 const Input = styled.input`
-  padding: 5px;
+  height: 35px;
   width: 230px;
   margin-right: 8px;
 `;
