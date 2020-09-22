@@ -1,7 +1,7 @@
 ## React App using data from SpaceX missions
 
 ### Demo link
-https://www....
+https://react-space-x.netlify.app/
 
 
 With this web app, the user can learn the SpaceX history, see all the launches, and eventually select information to share.
@@ -12,4 +12,4 @@ Other features:
 * Rocket type and name
 * Status of success
 * Youtube video about the launching
-* Possibility to filter by: orbit, mission name, launch date
+* Possibility to filter by: orbit, mission name and launch date
