@@ -98,4 +98,5 @@ const Input = styled.input`
   height: 35px;
   width: 230px;
   margin-right: 8px;
+  padding: 0 5px;
 `;

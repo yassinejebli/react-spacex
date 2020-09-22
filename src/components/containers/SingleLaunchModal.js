@@ -7,11 +7,67 @@ import { closeModal } from "../../actions/launchesActions";
 export default function SingleLaunchModal() {
   const { selectedLaunch } = useSelector((state) => state.launches);
   const dispatch = useDispatch();
+  const [launchDataState, setLaunchDataState] = React.useState([]);
+  const [isUserSelecting, setIsUserSelecting] = React.useState(false);
+
+  React.useEffect(() => {
+    if (selectedLaunch)
+      setLaunchDataState([
+        {
+          field: "flight_number",
+          label: "Flight Number: ",
+          value: selectedLaunch.flight_number,
+          isSelected: false,
+        },
+        {
+          field: "launch_year",
+          label: "Launch Year: ",
+          value: selectedLaunch.launch_year,
+          isSelected: false,
+        },
+        {
+          field: "launch_date_utc",
+          label: "Launch Date: ",
+          value: new Date(selectedLaunch.launch_date_utc).toLocaleDateString(
+            "gb"
+          ),
+          isSelected: false,
+        },
+        {
+          field: "launch_success",
+          label: "Successful: ",
+          value: selectedLaunch.launch_success ? "Yes" : "No",
+          isSelected: false,
+        },
+        {
+          field: "rocket_name",
+          label: "Rocket Name: ",
+          value: selectedLaunch.rocket.rocket_name,
+          isSelected: false,
+        },
+        {
+          field: "rocket_type",
+          label: "Rocket Type: ",
+          value: selectedLaunch.rocket.rocket_type,
+          isSelected: false,
+        },
+      ]);
+  }, [selectedLaunch]);
 
   if (!selectedLaunch) return null;
+
   const onClose = () => {
     dispatch(closeModal());
   };
+
+  const onFieldSelect = ({ target: { checked, value } }) => {
+    setLaunchDataState((_launchDataState) =>
+      _launchDataState.map((d) =>
+        d.field === value ? { ...d, isSelected: checked } : d
+      )
+    );
+  };
+
   return (
     <Modal>
       <Wrapper>
@@ -19,35 +75,55 @@ export default function SingleLaunchModal() {
         <Content>
           <Title>{selectedLaunch.mission_name}</Title>
           <Details>{selectedLaunch.details}</Details>
-          <div>
-            <Label>Flight Number: </Label>
-            {selectedLaunch.flight_number}
-          </div>
-          <div>
-            <Label>Launch Year: </Label>
-            {selectedLaunch.launch_year}
-          </div>
-          <div>
-            <Label>Launch Date: </Label>
-            {new Date(selectedLaunch.launch_date_utc).toLocaleDateString("gb")}
-          </div>
-          <div>
-            <Label>Successful: </Label>
-            {selectedLaunch.launch_success ? "Yes" : "No"}
-          </div>
-          <div>
-            <Label>Rocket Name: </Label>
-            {selectedLaunch.rocket.rocket_name}
-          </div>
-          <div>
-            <Label>Rocket Type: </Label>
-            {selectedLaunch.rocket.rocket_type}
-          </div>
+          {launchDataState.map((d) => (
+            <div key={d.field}>
+              <Label>
+                {isUserSelecting && (
+                  <input
+                    value={d.field}
+                    checked={d.isSelected}
+                    type="checkbox"
+                    onChange={onFieldSelect}
+                  />
+                )}
+                {d.label}
+              </Label>
+              {d.value}
+            </div>
+          ))}
           {selectedLaunch.links.youtube_id && (
             <Video
               src={`https://www.youtube.com/embed/${selectedLaunch.links.youtube_id}`}
             />
           )}
+          <Buttons>
+            {!isUserSelecting && (
+              <Button onClick={() => setIsUserSelecting(true)}>
+                Select fields to submit
+              </Button>
+            )}
+            {isUserSelecting && (
+              <Button
+                onClick={() => {
+                  // send data to some endpoint...
+                  setIsUserSelecting(false);
+                  alert(
+                    `Data to submit: ${JSON.stringify(
+                      launchDataState.filter((d) => d.isSelected)
+                    )}`
+                  );
+                  setLaunchDataState((_launchDataState) =>
+                    _launchDataState.map((d) => ({ ...d, isSelected: false }))
+                  );
+                }}
+              >
+                Submit
+              </Button>
+            )}
+            {isUserSelecting && (
+              <Button onClick={() => setIsUserSelecting(false)}>Cancel</Button>
+            )}
+          </Buttons>
         </Content>
       </Wrapper>
     </Modal>
@@ -78,17 +154,29 @@ const Content = styled.div`
   padding: 0 8px;
 `;
 
+const Buttons = styled.div`
+  display: flex;
+  margin-top: 8px;
+  & button {
+    margin-right: 8px;
+  }
+`;
 const Button = styled.button`
   font-weight: bold;
-  width: 30px;
-  height: 30px;
   cursor: pointer;
+  padding: 4px;
 `;
 
 const CloseButton = styled(Button)`
   position: absolute;
+  background: transparent;
+  border: none;
   top: 8px;
-  right: 8px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  font-size: 24px;
+  color: #f1f1f1;
 `;
 
 const Title = styled.h1``;
