@@ -107,11 +107,10 @@ export default function SingleLaunchModal() {
                 onClick={() => {
                   // send data to some endpoint...
                   setIsUserSelecting(false);
-                  alert(
-                    `Data to share: ${JSON.stringify(
-                      launchDataState.filter((d) => d.isSelected)
-                    )}`
-                  );
+                  const dataToShare = launchDataState
+                    .filter((d) => d.isSelected)
+                    .map((d) => ({ [d.field]: d.value }));
+                  alert(`Data to share: ${JSON.stringify(dataToShare)}`);
                   setLaunchDataState((_launchDataState) =>
                     _launchDataState.map((d) => ({ ...d, isSelected: false }))
                   );
