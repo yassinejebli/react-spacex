@@ -4,6 +4,7 @@ export const launchesState = {
   launchesItems: [],
   loading: false,
   error: null,
+  filters: {},
   meta: {
     currentPage: 1,
     perPage: 6,
@@ -23,7 +24,8 @@ export function launchesReducer(state = launchesState, action) {
           currentPage: action.payload.currentPage,
           perPage: 6, // Always 6 items per page for now, I can parameterize it if that's needed
           totalItems: action.payload.totalItems,
-        },
+        }, // Preserve old filters
+        filters: { ...state.filters, ...action.payload.filters },
         loading: false,
       };
     case Actions.FETCH_DATA_FAIL:

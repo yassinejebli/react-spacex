@@ -12,7 +12,7 @@ function* fetchHistory() {
     const response = yield fetch(
       `https://api.spacexdata.com/v3/history?filter=${fieldsToFetch}`
     );
-    if (response.status >= 200 && response.status < 300) {
+    if (response.ok) {
       const data = yield response.json();
       yield put({ type: HistoryActions.FETCH_DATA_SUCCESS, payload: data });
     } else {
@@ -47,7 +47,7 @@ function* fetchLaunches({ payload: { currentPage, filters } }) {
       ).toString()}&offset=${offset}&limit=${limit}&filter=${fieldsToFetch}`
     );
     const totalItems = response.headers.get("spacex-api-count");
-    if (response.status >= 200 && response.status < 300) {
+    if (response.ok) {
       const data = yield response.json();
       yield put({
         type: LaunchesActions.FETCH_DATA_SUCCESS,
@@ -55,6 +55,7 @@ function* fetchLaunches({ payload: { currentPage, filters } }) {
           data,
           totalItems,
           currentPage,
+          filters,
         },
       });
     } else {
@@ -82,23 +83,18 @@ function* fetchAndReshapeOrbitsData() {
     const response = yield fetch(
       `https://api.spacexdata.com/v3/rockets?filter=${fieldsToFetch}`
     );
-    if (response.status >= 200 && response.status < 300) {
+    if (response.ok) {
       const data = yield response.json();
 
       // Reshape data, maybe I have to create a new action for reshaping orbit data :/
       const orbits = data.reduce((acc, curr) => {
         curr.payload_weights.forEach((orb) => {
-          console.log({ orb, curr, acc });
           // Add orbit only if it doesn't exist in the accumulator
-          const tmp = acc.find((_orb) => _orb.id === orb.id);
-          if (!tmp)
+          if (!acc.find((_orb) => _orb.id === orb.id))
             acc.push({
               id: orb.id,
               name: orb.name,
-              rocketsId: [curr.rocket_id],
             });
-          // if orbit already added in acc, add rocket id in rocketsId array
-          else tmp.rocketsId = [...tmp.rocketsId, curr.rocket_id];
         });
         return acc;
       }, []);

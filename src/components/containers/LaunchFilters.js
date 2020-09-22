@@ -10,7 +10,8 @@ export default function LaunchFilters() {
   const dispatch = useDispatch();
   const [filter, setFilter] = React.useState({
     mission_name: "",
-    launch_date: null,
+    launch_date: "",
+    orbit: "",
   });
   const debouncedFilter = useDebounce(filter);
 
@@ -34,10 +35,17 @@ export default function LaunchFilters() {
         mission_name: debouncedFilter.mission_name,
       };
 
+    if (debouncedFilter.orbit)
+      filterParam = {
+        ...filterParam,
+        orbit: debouncedFilter.orbit.toUpperCase(),
+      };
+
     dispatch(loadLaunches(1, filterParam));
   }, [debouncedFilter]);
 
   const onFieldChange = ({ target }) => {
+    console.log(target.value);
     setFilter((_filter) => ({ ..._filter, [target.name]: target.value }));
   };
 
@@ -56,7 +64,11 @@ export default function LaunchFilters() {
         name="launch_date"
         onChange={onFieldChange}
       />
-      <OrbitDropdownList />
+      <OrbitDropdownList
+        name="orbit"
+        onChange={onFieldChange}
+        value={filter.orbit}
+      />
     </Wrapper>
   );
 }
