@@ -13,3 +13,24 @@ Other features:
 * Status of success
 * Youtube video about the launching
 * Possibility to filter by: orbit, mission name and launch date
+
+### Installation
+
+`$ git clone https://github.com/yassinejebli/react-spacex`
+
+`$ cd react-spacex`
+
+`$ npm install`
+
+`$ npm run start`
+
+### Technologies used
+* Javascript
+* CSS
+* React
+* Redux
+* Redux-saga
+* Styled-components
+* Webpack
+* Babel
+* [Space X API](https://api.spacexdata.com/)
