@@ -99,7 +99,7 @@ export default function SingleLaunchModal() {
           <Buttons>
             {!isUserSelecting && (
               <Button onClick={() => setIsUserSelecting(true)}>
-                Select fields to submit
+                Select fields to share
               </Button>
             )}
             {isUserSelecting && (
@@ -108,7 +108,7 @@ export default function SingleLaunchModal() {
                   // send data to some endpoint...
                   setIsUserSelecting(false);
                   alert(
-                    `Data to submit: ${JSON.stringify(
+                    `Data to share: ${JSON.stringify(
                       launchDataState.filter((d) => d.isSelected)
                     )}`
                   );
