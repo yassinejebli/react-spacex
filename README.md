@@ -33,4 +33,4 @@ Other features:
 * Styled-components
 * Webpack
 * Babel
-* [Space X API](https://api.spacexdata.com/)
+* [SpaceX API](https://docs.spacexdata.com/?version=v3)
