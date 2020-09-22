@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Loader from "../elements/Loader";
-import { loadLaunches } from "../../actions/launchesActions";
+import { loadLaunches, openModal } from "../../actions/launchesActions";
 import LaunchItem from "../elements/LaunchItem";
 import Pagination from "./Pagination";
 import LaunchFilters from "./LaunchFilters";
@@ -17,6 +17,10 @@ export default function Launches() {
     // load 1st page
     dispatch(loadLaunches(1));
   }, []);
+
+  const openSingleLaunchModal = (launchId) => {
+    dispatch(openModal(launchId));
+  };
   return (
     <>
       <Loader loading={loading} />
@@ -31,6 +35,7 @@ export default function Launches() {
               nationality={payload?.nationality}
               manufacturer={payload?.manufacturer}
               type={payload?.payload_type}
+              onClick={() => openSingleLaunchModal(launch.flight_number)}
             />
           );
         })}

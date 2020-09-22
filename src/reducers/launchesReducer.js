@@ -2,6 +2,8 @@ import * as Actions from "../actions/launchesActions";
 
 export const launchesState = {
   launchesItems: [],
+  showModal: false,
+  selectedLaunch: null,
   loading: false,
   error: null,
   filters: {},
@@ -33,6 +35,32 @@ export function launchesReducer(state = launchesState, action) {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    // TODO: I think I should move these actions below to a new single launch specific reducer
+    case Actions.FETCH_SINGLE_DATA_BEGIN:
+      return { ...state, loading: true };
+    case Actions.FETCH_SINGLE_DATA_SUCCESS:
+      return {
+        ...state,
+        selectedLaunch: action.payload,
+        loading: false,
+      };
+    case Actions.FETCH_SINGLE_DATA_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case Actions.OPEN_MODAL:
+      return {
+        ...state,
+        showModal: true,
+      };
+    case Actions.CLOSE_MODAL:
+      return {
+        ...state,
+        showModal: false,
+        selectedLaunch: null,
       };
     default:
       return state;

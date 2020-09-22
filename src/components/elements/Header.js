@@ -1,6 +1,6 @@
 import React from "react";
-import Logo from "../elements/Logo";
-import Nav from "../elements/Nav";
+import Logo from "./Logo";
+import Nav from "./Nav";
 import styled from "styled-components";
 
 export default function Header() {

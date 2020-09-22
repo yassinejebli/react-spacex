@@ -23,7 +23,7 @@ export default function History() {
           <HistoryItem
             key={event.id}
             title={event.title}
-            date={new Date(event.event_date_utc).toLocaleDateString("de")}
+            date={new Date(event.event_date_utc).toLocaleDateString("gb")}
             description={event.details}
             link={event.links.article}
           />

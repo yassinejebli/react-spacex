@@ -74,6 +74,40 @@ function* loadLaunches() {
   yield takeLatest(LaunchesActions.FETCH_DATA_BEGIN, fetchLaunches);
 }
 
+// --------------------------------------- Single Launch
+
+function* openModalAndfetchSingleLaunch({ payload: { launchId } }) {
+  const fieldsToFetch =
+    "mission_name,launch_year,launch_date_utc,launch_success,details,links,flight_number,rocket";
+  try {
+    yield put({
+      type: LaunchesActions.FETCH_SINGLE_DATA_BEGIN,
+    });
+    const response = yield fetch(
+      `https://api.spacexdata.com/v3/launches/${launchId}?filter=${fieldsToFetch}`
+    );
+    if (response.ok) {
+      const data = yield response.json();
+      yield put({
+        type: LaunchesActions.FETCH_SINGLE_DATA_SUCCESS,
+        payload: data,
+      });
+    } else {
+      throw response;
+    }
+  } catch (error) {
+    yield put({
+      type: LaunchesActions.FETCH_SINGLE_DATA_FAIL,
+      loading: false,
+      error,
+    });
+  }
+}
+
+function* loadSingleLaunch() {
+  yield takeLatest(LaunchesActions.OPEN_MODAL, openModalAndfetchSingleLaunch);
+}
+
 // ---------------------------------------Orbits
 
 function* fetchAndReshapeOrbitsData() {
@@ -116,5 +150,5 @@ function* loadOrbits() {
 }
 
 export default function* rootSaga() {
-  yield all([loadHistory(), loadLaunches(), loadOrbits()]);
+  yield all([loadHistory(), loadLaunches(), loadSingleLaunch(), loadOrbits()]);
 }

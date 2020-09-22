@@ -6,9 +6,10 @@ export default function LaunchItem({
   nationality,
   manufacturer,
   type,
+  ...props
 }) {
   return (
-    <Wrapper>
+    <Wrapper {...props}>
       <Title>{missionName}</Title>
       <div>
         <Label>Nationality:</Label> {nationality}
@@ -32,6 +33,7 @@ const Wrapper = styled.div`
   padding-bottom: 12px;
   border-bottom: 1px solid #c1c1c1;
   user-select: none;
+  cursor: pointer;
   & div {
     margin-top: 6px;
     user-select: none;
