@@ -45,7 +45,6 @@ export default function LaunchFilters() {
   }, [debouncedFilter]);
 
   const onFieldChange = ({ target }) => {
-    console.log(target.value);
     setFilter((_filter) => ({ ..._filter, [target.name]: target.value }));
   };
 
