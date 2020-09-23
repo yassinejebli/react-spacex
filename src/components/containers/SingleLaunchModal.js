@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../elements/Modal";
 import { closeModal } from "../../actions/launchesActions";
+import { shareLaunchData } from "../../actions/shareLaunchDataActions";
 
 export default function SingleLaunchModal() {
   const { selectedLaunch } = useSelector((state) => state.launches);
@@ -111,6 +112,7 @@ export default function SingleLaunchModal() {
                     .filter((d) => d.isSelected)
                     .map((d) => ({ [d.field]: d.value }));
                   alert(`Data to share: ${JSON.stringify(dataToShare)}`);
+                  dispatch(shareLaunchData(dataToShare));
                   setLaunchDataState((_launchDataState) =>
                     _launchDataState.map((d) => ({ ...d, isSelected: false }))
                   );

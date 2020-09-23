@@ -1,7 +1,8 @@
-import { put, takeLatest, all, select } from "redux-saga/effects";
+import { put, takeLatest, all, select, call } from "redux-saga/effects";
 import * as HistoryActions from "../actions/historyActions";
 import * as LaunchesActions from "../actions/launchesActions";
 import * as OrbitActions from "../actions/orbitActions";
+import * as ShareLaunchDataActions from "../actions/shareLaunchDataActions";
 
 // ---------------------------------------History
 
@@ -9,7 +10,8 @@ function* fetchHistory() {
   try {
     // Fetch only the needed fields
     const fieldsToFetch = "id,title,event_date_utc,details,links";
-    const response = yield fetch(
+    const response = yield call(
+      fetch,
       `https://api.spacexdata.com/v3/history?filter=${fieldsToFetch}`
     );
     if (response.ok) {
@@ -41,7 +43,8 @@ function* fetchLaunches({ payload: { currentPage, filters } }) {
   const fieldsToFetch =
     "mission_name,flight_number,rocket/second_stage/payloads";
   try {
-    const response = yield fetch(
+    const response = yield call(
+      fetch,
       `https://api.spacexdata.com/v3/launches?${new URLSearchParams(
         filters
       ).toString()}&offset=${offset}&limit=${limit}&filter=${fieldsToFetch}`
@@ -83,7 +86,8 @@ function* openModalAndfetchSingleLaunch({ payload: { launchId } }) {
     yield put({
       type: LaunchesActions.FETCH_SINGLE_DATA_BEGIN,
     });
-    const response = yield fetch(
+    const response = yield call(
+      fetch,
       `https://api.spacexdata.com/v3/launches/${launchId}?filter=${fieldsToFetch}`
     );
     if (response.ok) {
@@ -114,7 +118,8 @@ function* fetchAndReshapeOrbitsData() {
   try {
     // Fetch only the needed fields
     const fieldsToFetch = "rocket_id,payload_weights";
-    const response = yield fetch(
+    const response = yield call(
+      fetch,
       `https://api.spacexdata.com/v3/rockets?filter=${fieldsToFetch}`
     );
     if (response.ok) {
@@ -149,6 +154,47 @@ function* loadOrbits() {
   yield takeLatest(OrbitActions.FETCH_DATA_BEGIN, fetchAndReshapeOrbitsData);
 }
 
+// --------------------------------------- Share launch data
+
+function* submitLaunchData({ payload: { launchData } }) {
+  try {
+    // this post request will return an error because someimagenaryendpoint.com/share doesn't exist on Web
+    const response = yield fetch("https://someimagenaryendpoint.com/share", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(launchData),
+    });
+    if (response.ok) {
+      const data = yield response.json();
+      yield put({
+        type: ShareLaunchDataActions.SHARE_DATA_SUCCESS,
+        payload: data,
+      });
+    } else {
+      throw response;
+    }
+  } catch (error) {
+    yield put({
+      type: ShareLaunchDataActions.SHARE_DATA_FAIL,
+      loading: false,
+      error,
+    });
+  }
+}
+
+function* shareLaunchData() {
+  yield takeLatest(ShareLaunchDataActions.SHARE_DATA_BEGIN, submitLaunchData);
+}
+
 export default function* rootSaga() {
-  yield all([loadHistory(), loadLaunches(), loadSingleLaunch(), loadOrbits()]);
+  yield all([
+    loadHistory(),
+    loadLaunches(),
+    loadSingleLaunch(),
+    loadOrbits(),
+    shareLaunchData(),
+  ]);
 }
