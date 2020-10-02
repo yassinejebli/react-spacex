@@ -5,7 +5,7 @@ export default function Loader({ loading }) {
   if (!loading) return null;
 
   return (
-    <>
+    <div id="loader">
       <Overlay />
       <Wrapper>
         <img src="https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/space-rocket-512.png" />
@@ -19,7 +19,7 @@ export default function Loader({ loading }) {
           <li />
         </ul>
       </Wrapper>
-    </>
+    </div>
   );
 }
 
