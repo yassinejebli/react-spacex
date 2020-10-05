@@ -1,16 +1,18 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Loader from "../elements/Loader";
 import { loadLaunches, openModal } from "../../actions/launchesActions";
 import LaunchItem from "../elements/LaunchItem";
 import Pagination from "./Pagination";
 import LaunchFilters from "./LaunchFilters";
+import { launchesSelectors } from "../../selectors/LaunchesSelectors";
 
 export default function Launches() {
   const dispatch = useDispatch();
   const { loading, error, launchesItems } = useSelector(
-    (state) => state.launches
+    launchesSelectors,
+    shallowEqual
   );
 
   React.useEffect(() => {

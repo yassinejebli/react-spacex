@@ -1,16 +1,17 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { loadHistory } from "../../actions/historyActions";
 import Loader from "../elements/Loader";
 import HistoryItem from "../elements/HistoryItem";
+import { historySelectors } from "../../selectors/historySelectors";
 
 export default function History() {
   const dispatch = useDispatch();
   const { loading, error, historyItems } = useSelector(
-    (state) => state.history
+    historySelectors,
+    shallowEqual
   );
-  console.log({ loading, historyItems, error });
 
   React.useEffect(() => {
     dispatch(loadHistory());

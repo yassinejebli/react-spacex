@@ -1,6 +1,9 @@
 import * as Actions from "../actions/launchesActions";
 
-export const launchesState = {
+/**
+ * @type LaunchState
+ */
+export const INITIAL_STATE = {
   launchesItems: [],
   showModal: false,
   selectedLaunch: null,
@@ -14,21 +17,27 @@ export const launchesState = {
   },
 };
 
-export function launchesReducer(state = launchesState, action) {
+export function launchesReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case Actions.FETCH_DATA_BEGIN:
-      return { ...state, loading: true };
+      return {
+        ...state,
+        loading: true,
+      };
     case Actions.FETCH_DATA_SUCCESS:
       return {
         ...state,
+        loading: false,
         launchesItems: action.payload.data,
         meta: {
           currentPage: action.payload.currentPage,
           perPage: 6, // Always 6 items per page for now, I can parameterize it if that's needed
           totalItems: action.payload.totalItems,
         }, // Preserve old filters
-        filters: { ...state.filters, ...action.payload.filters },
-        loading: false,
+        filters: {
+          ...state.filters,
+          ...action.payload.filters,
+        },
       };
     case Actions.FETCH_DATA_FAIL:
       return {
@@ -38,7 +47,10 @@ export function launchesReducer(state = launchesState, action) {
       };
     // TODO: I think I should move these actions below to a new single launch specific reducer
     case Actions.FETCH_SINGLE_DATA_BEGIN:
-      return { ...state, loading: true };
+      return {
+        ...state,
+        loading: true,
+      };
     case Actions.FETCH_SINGLE_DATA_SUCCESS:
       return {
         ...state,

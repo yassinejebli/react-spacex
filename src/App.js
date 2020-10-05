@@ -10,17 +10,15 @@ import SingleLaunchModal from "./components/containers/SingleLaunchModal";
 
 export default function App() {
   return (
-    <div id="app">
-      <Provider store={store}>
-        <GlobalStyle />
-        <Router>
-          <Header />
-          <SingleLaunchModal />
-          <Route exact path="/" component={History} />
-          <Route exact path="/launches" component={Launches} />
-        </Router>
-      </Provider>
-    </div>
+    <Provider store={store}>
+      <GlobalStyle />
+      <Router>
+        <Header />
+        <SingleLaunchModal />
+        <Route exact path="/" component={History} />
+        <Route exact path="/launches" component={Launches} />
+      </Router>
+    </Provider>
   );
 }
 

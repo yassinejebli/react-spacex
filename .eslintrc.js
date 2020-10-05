@@ -5,7 +5,12 @@ module.exports = {
     jest: true,
   },
   parser: "babel-eslint",
-  extends: ["standard", "standard-react", "prettier"],
+  extends: [
+    "standard",
+    "standard-react",
+    "prettier",
+    "plugin:react/recommended",
+  ],
   plugins: ["react", "react-hooks"],
   rules: {
     strict: 0,

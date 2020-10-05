@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { loadLaunches } from "../../actions/launchesActions";
+import * as LaunchActions from "../../actions/launchesActions";
 import useDebounce from "../../hooks/useDebounce";
 import { formatDate } from "../../utils/dateUtils";
 import OrbitDropdownList from "./OrbitDropdownList";
@@ -41,13 +41,19 @@ export default function LaunchFilters() {
         orbit: debouncedFilter.orbit.toUpperCase(),
       };
 
-    dispatch(loadLaunches(1, filterParam));
+    dispatch(LaunchActions.loadLaunches(1, filterParam));
   }, [debouncedFilter]);
 
   const onFieldChange = ({ target }) => {
     setFilter((_filter) => ({ ..._filter, [target.name]: target.value }));
+    dispatch(
+      LaunchActions.loadLaunches(1, {
+        [target.name]: target.value,
+      })
+    );
   };
 
+  console.log("Launch Filter");
   return (
     <Wrapper>
       <div>

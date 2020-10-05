@@ -3,33 +3,23 @@ import * as HistoryActions from "../actions/historyActions";
 import * as LaunchesActions from "../actions/launchesActions";
 import * as OrbitActions from "../actions/orbitActions";
 import * as ShareLaunchDataActions from "../actions/shareLaunchDataActions";
+import * as API from "../api";
 
 // ---------------------------------------History
 
-function* fetchHistory() {
+export function* fetchHistory() {
   try {
-    // Fetch only the needed fields
-    const fieldsToFetch = "id,title,event_date_utc,details,links";
-    const response = yield call(
-      fetch,
-      `https://api.spacexdata.com/v3/history?filter=${fieldsToFetch}`
-    );
-    if (response.ok) {
-      const data = yield response.json();
-      yield put({ type: HistoryActions.FETCH_DATA_SUCCESS, payload: data });
-    } else {
-      throw response;
-    }
+    const data = yield call(API.fetchLaunchesHistory);
+    yield put({ type: HistoryActions.FETCH_DATA_SUCCESS, payload: data });
   } catch (error) {
     yield put({
       type: HistoryActions.FETCH_DATA_FAIL,
-      loading: false,
-      error,
+      payload: error,
     });
   }
 }
 
-function* loadHistory() {
+export function* loadHistory() {
   yield takeLatest(HistoryActions.FETCH_DATA_BEGIN, fetchHistory);
 }
 
@@ -67,8 +57,7 @@ function* fetchLaunches({ payload: { currentPage, filters } }) {
   } catch (error) {
     yield put({
       type: LaunchesActions.FETCH_DATA_FAIL,
-      loading: false,
-      error,
+      payload: error,
     });
   }
 }
@@ -102,8 +91,7 @@ function* openModalAndfetchSingleLaunch({ payload: { launchId } }) {
   } catch (error) {
     yield put({
       type: LaunchesActions.FETCH_SINGLE_DATA_FAIL,
-      loading: false,
-      error,
+      payload: error,
     });
   }
 }
@@ -144,8 +132,7 @@ function* fetchAndReshapeOrbitsData() {
   } catch (error) {
     yield put({
       type: OrbitActions.FETCH_DATA_FAIL,
-      loading: false,
-      error,
+      payload: error,
     });
   }
 }
@@ -179,8 +166,7 @@ function* submitLaunchData({ payload: { launchData } }) {
   } catch (error) {
     yield put({
       type: ShareLaunchDataActions.SHARE_DATA_FAIL,
-      loading: false,
-      error,
+      payload: error,
     });
   }
 }
