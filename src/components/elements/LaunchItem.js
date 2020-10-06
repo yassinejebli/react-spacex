@@ -9,8 +9,8 @@ export default function LaunchItem({
   ...props
 }) {
   return (
-    <Wrapper {...props}>
-      <Title>{missionName}</Title>
+    <Wrapper data-test="launchItemComponent" {...props}>
+      <Title data-test="missionName">{missionName}</Title>
       <div>
         <Label>Nationality:</Label> {nationality}
       </div>

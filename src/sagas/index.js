@@ -10,12 +10,9 @@ import * as API from "../api";
 export function* fetchHistory() {
   try {
     const data = yield call(API.fetchLaunchesHistory);
-    yield put({ type: HistoryActions.FETCH_DATA_SUCCESS, payload: data });
+    yield put(HistoryActions.setHistoryItems(data));
   } catch (error) {
-    yield put({
-      type: HistoryActions.FETCH_DATA_FAIL,
-      payload: error,
-    });
+    yield put(HistoryActions.setHistoryError(error));
   }
 }
 

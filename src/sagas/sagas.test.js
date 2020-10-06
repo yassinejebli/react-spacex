@@ -3,16 +3,37 @@ import { takeLatest } from "redux-saga/effects";
 import { fetchHistory, loadHistory } from "./";
 import * as HistoryActions from "../actions/historyActions";
 import * as API from "../api";
-import { expectSaga } from "redux-saga-test-plan";
+import { expectSaga, testSaga } from "redux-saga-test-plan";
 import { historyReducer } from "../reducers/historyReducer";
 
 describe("History saga", () => {
-  const genObject = loadHistory();
+  it("should fetch history items successfully", () => {
+    const historyItems = ["item1", "item2"];
+    testSaga(fetchHistory)
+      .next()
+      .call(API.fetchLaunchesHistory)
+      .next(historyItems)
+      .put(HistoryActions.setHistoryItems(historyItems))
+      .next()
+      .isDone();
+  });
+
+  it("should throw an error", () => {
+    const error = new Error("Some error");
+    testSaga(fetchHistory)
+      .next()
+      .throw(error)
+      .put(HistoryActions.setHistoryError(error))
+      .next()
+      .isDone();
+  });
 
   it("should wait for FETCH_HISTORY_DATA_BEGIN action then call fetchHistory", () => {
-    expect(genObject.next().value).toEqual(
-      takeLatest(HistoryActions.FETCH_DATA_BEGIN, fetchHistory)
-    );
+    testSaga(loadHistory)
+      .next()
+      .takeLatest(HistoryActions.FETCH_DATA_BEGIN, fetchHistory)
+      .next()
+      .isDone();
   });
 
   it("should fetch launch history items successfully", async () => {

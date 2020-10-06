@@ -7,3 +7,17 @@ export function loadHistory() {
     type: FETCH_DATA_BEGIN,
   };
 }
+
+export function setHistoryItems(data) {
+  return {
+    type: FETCH_DATA_SUCCESS,
+    payload: data,
+  };
+}
+
+export function setHistoryError(error) {
+  return {
+    type: FETCH_DATA_FAIL,
+    payload: error,
+  };
+}
