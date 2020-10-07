@@ -1,10 +1,11 @@
 import { runSaga } from "redux-saga";
-import { takeLatest } from "redux-saga/effects";
-import { fetchHistory, loadHistory } from "./";
+import { fetchHistory, fetchLaunches, loadHistory, mySagaFunction } from "./";
 import * as HistoryActions from "../actions/historyActions";
+import * as LaunchActions from "../actions/launchesActions";
 import * as API from "../api";
 import { expectSaga, testSaga } from "redux-saga-test-plan";
 import { historyReducer } from "../reducers/historyReducer";
+import { launchesSelectors } from "../selectors/LaunchesSelectors";
 
 describe("History saga", () => {
   it("should fetch history items successfully", () => {
@@ -34,6 +35,10 @@ describe("History saga", () => {
       .takeLatest(HistoryActions.FETCH_DATA_BEGIN, fetchHistory)
       .next()
       .isDone();
+  });
+
+  it("should yield 1", () => {
+    testSaga(mySagaFunction).next().is(1).next().isDone();
   });
 
   it("should fetch launch history items successfully", async () => {
@@ -117,5 +122,37 @@ describe("History saga", () => {
       .withReducer(historyReducer)
       .hasFinalState(expectedState)
       .run();
+  });
+});
+
+describe("Launches saga", () => {
+  it("should fetch launches successfully", () => {
+    const actionParam = {
+      payload: {
+        currentPage: 1,
+        filters: {},
+      },
+    };
+    const expectedData = ["launch 1", "launch 2"];
+    testSaga(fetchLaunches, actionParam)
+      .next()
+      .select(launchesSelectors)
+      .next({
+        meta: {},
+      })
+      .call(API.fetchLaunches)
+      .next({
+        json: () => expectedData,
+      })
+      .next(expectedData)
+      .put(
+        LaunchActions.setLaunchItems({
+          data: expectedData,
+          currentPage: 1,
+          totalItems: 10,
+        })
+      )
+      .next()
+      .isDone();
   });
 });

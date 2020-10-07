@@ -4,6 +4,7 @@ import * as LaunchesActions from "../actions/launchesActions";
 import * as OrbitActions from "../actions/orbitActions";
 import * as ShareLaunchDataActions from "../actions/shareLaunchDataActions";
 import * as API from "../api";
+import { launchesSelectors } from "../selectors/LaunchesSelectors";
 
 // ---------------------------------------History
 
@@ -21,41 +22,22 @@ export function* loadHistory() {
 }
 
 // ---------------------------------------Launches
-
-function* fetchLaunches({ payload: { currentPage, filters } }) {
-  const { meta } = yield select((state) => state.launches);
-  const limit = meta.perPage;
-  const offset = (currentPage - 1) * limit;
-  // Fetch only the needed fields
-  const fieldsToFetch =
-    "mission_name,flight_number,rocket/second_stage/payloads";
+export function* fetchLaunches({ payload: { currentPage, filters } }) {
+  const { meta } = yield select(launchesSelectors);
+  // const limit = meta.perPage;
+  // const offset = (currentPage - 1) * limit;
   try {
-    const response = yield call(
-      fetch,
-      `https://api.spacexdata.com/v3/launches?${new URLSearchParams(
-        filters
-      ).toString()}&offset=${offset}&limit=${limit}&filter=${fieldsToFetch}`
+    const response = yield call(API.fetchLaunches);
+    const data = yield response.json();
+    yield put(
+      LaunchesActions.setLaunchItems({
+        data,
+        currentPage: 1,
+        totalItems: 10,
+      })
     );
-    const totalItems = response.headers.get("spacex-api-count");
-    if (response.ok) {
-      const data = yield response.json();
-      yield put({
-        type: LaunchesActions.FETCH_DATA_SUCCESS,
-        payload: {
-          data,
-          totalItems,
-          currentPage,
-          filters,
-        },
-      });
-    } else {
-      throw response;
-    }
   } catch (error) {
-    yield put({
-      type: LaunchesActions.FETCH_DATA_FAIL,
-      payload: error,
-    });
+    yield put(LaunchesActions.setLaunchError(error));
   }
 }
 
@@ -172,6 +154,12 @@ function* shareLaunchData() {
   yield takeLatest(ShareLaunchDataActions.SHARE_DATA_BEGIN, submitLaunchData);
 }
 
+// custom saga functions
+
+export function* mySagaFunction() {
+  yield 1;
+}
+
 export default function* rootSaga() {
   yield all([
     loadHistory(),
@@ -179,5 +167,6 @@ export default function* rootSaga() {
     loadSingleLaunch(),
     loadOrbits(),
     shareLaunchData(),
+    mySagaFunction(),
   ]);
 }

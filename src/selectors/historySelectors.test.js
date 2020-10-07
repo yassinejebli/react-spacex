@@ -1,4 +1,4 @@
-const { historySelectors } = require("./historySelectors");
+import { historySelectors } from "./historySelectors";
 
 describe("History selectors", () => {
   it("should return history state", () => {

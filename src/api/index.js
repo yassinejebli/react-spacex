@@ -10,3 +10,18 @@ export async function fetchLaunchesHistory() {
     throw new Error("Cannot fetch history data");
   }
 }
+
+export async function fetchLaunches(offset = 0, limit = 6, filters = {}) {
+  const fieldsToFetch =
+    "mission_name,flight_number,rocket/second_stage/payloads";
+  const response = await fetch(
+    `https://api.spacexdata.com/v3/launches?${new URLSearchParams(
+      filters
+    ).toString()}&offset=${offset}&limit=${limit}&filter=${fieldsToFetch}`
+  );
+  if (response.ok) {
+    return response;
+  } else {
+    throw new Error("Cannot fetch launches data");
+  }
+}

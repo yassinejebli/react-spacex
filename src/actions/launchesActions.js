@@ -33,3 +33,17 @@ export function closeModal() {
     type: CLOSE_MODAL,
   };
 }
+
+export function setLaunchItems(data) {
+  return {
+    type: FETCH_DATA_SUCCESS,
+    payload: data,
+  };
+}
+
+export function setLaunchError(error) {
+  return {
+    type: FETCH_SINGLE_DATA_FAIL,
+    payload: error,
+  };
+}
