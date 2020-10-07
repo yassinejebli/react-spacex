@@ -17,6 +17,7 @@ export const INITIAL_STATE = {
   },
 };
 
+// TODO: should create SET_FILTERS action, it doesn't make sense to set filters after successful fetch
 export function launchesReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case Actions.FETCH_DATA_BEGIN:

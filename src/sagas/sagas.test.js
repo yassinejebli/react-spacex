@@ -138,9 +138,15 @@ describe("Launches saga", () => {
       .next()
       .select(launchesSelectors)
       .next({
-        meta: {},
+        meta: {
+          perPage: 6,
+        },
       })
-      .call(API.fetchLaunches)
+      .call(API.fetchLaunches, {
+        filters: {},
+        limit: 6,
+        offset: 0,
+      })
       .next({
         json: () => expectedData,
       })

@@ -24,10 +24,14 @@ export function* loadHistory() {
 // ---------------------------------------Launches
 export function* fetchLaunches({ payload: { currentPage, filters } }) {
   const { meta } = yield select(launchesSelectors);
-  // const limit = meta.perPage;
-  // const offset = (currentPage - 1) * limit;
+  const limit = meta.perPage;
+  const offset = (currentPage - 1) * limit;
   try {
-    const response = yield call(API.fetchLaunches);
+    const response = yield call(API.fetchLaunches, {
+      limit,
+      offset,
+      filters,
+    });
     const data = yield response.json();
     yield put(
       LaunchesActions.setLaunchItems({

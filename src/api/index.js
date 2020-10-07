@@ -11,7 +11,7 @@ export async function fetchLaunchesHistory() {
   }
 }
 
-export async function fetchLaunches(offset = 0, limit = 6, filters = {}) {
+export async function fetchLaunches({ offset, limit, filters }) {
   const fieldsToFetch =
     "mission_name,flight_number,rocket/second_stage/payloads";
   const response = await fetch(
