@@ -5,11 +5,9 @@ describe("History selectors", () => {
     const mockStore = () => ({
       history: {
         historyName: "history name",
-        type: 1,
-        type2: 2,
       },
     });
     const result = historySelectors(mockStore());
-    expect(result.history).toBe();
+    expect(result.historyName).toEqual("history name");
   });
 });
